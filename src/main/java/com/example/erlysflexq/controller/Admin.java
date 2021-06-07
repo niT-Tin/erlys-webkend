@@ -1,11 +1,13 @@
 package com.example.erlysflexq.controller;
 
 
+import cn.hutool.system.UserInfo;
 import com.example.erlysflexq.dao.UserProperties;
 import com.example.erlysflexq.pojo.Arrangement;
 import com.example.erlysflexq.pojo.User;
 import com.example.erlysflexq.pojo.Userinfo;
 import com.example.erlysflexq.service.ArrangementService;
+import com.example.erlysflexq.service.RefereeService;
 import com.example.erlysflexq.service.UserinfoService;
 import io.swagger.annotations.ApiOperation;
 import org.apache.http.HttpStatus;
@@ -13,17 +15,50 @@ import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
 public class Admin {
+
+    final String role1 = "admin";
+    final String role2 = "referee";
+    final String role3 = "player";
+
     @Autowired
     UserProperties userService;
     @Autowired
     UserinfoService userinfoService;
     @Autowired
     ArrangementService arrangementService;
+    @Autowired
+    RefereeService refereeService;
+
+
+    @GetMapping("/getallplayerinfo")
+    @ApiOperation("获取所有运动员信息")
+    @CrossOrigin
+    public List<Userinfo> selectAllPlayerInfo(){
+        List<Userinfo> all = userinfoService.findAll();
+//        List<Userinfo> list = new ArrayList<>();
+        return all.stream()
+                .filter(userinfo -> userinfo.getRoles().equals(role3))
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/getallrefereeinfo")
+    @ApiOperation("获取所有裁判信息")
+    @CrossOrigin
+    public List<Userinfo> selectAllRefereeInfo(){
+        List<Userinfo> all = refereeService.findAll();
+        return all.stream()
+                .filter(userinfo -> userinfo.getRoles().equals(role2))
+                .collect(Collectors.toList());
+    }
+
+
 
     @GetMapping("/getallUser")
     @ApiOperation("获取所有信息")
