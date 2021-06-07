@@ -1,5 +1,6 @@
 package com.example.erlysflexq.controller;
 
+import io.swagger.annotations.ApiOperation;
 import org.apache.http.HttpStatus;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class Login {
 
     @RequestMapping("/welogin")
+    @ApiOperation("手机端登录")
     public int weLogin(String account, String password) {
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken token = new UsernamePasswordToken(account, password);
@@ -26,6 +28,7 @@ public class Login {
     }
 
     @RequestMapping("/login")
+    @ApiOperation("Web端登录")
     public int webLogin(String account, String password) {
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken token = new UsernamePasswordToken(account, password);
