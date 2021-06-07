@@ -27,7 +27,7 @@ public class Userinfo {
     private Long bests;
 
 
-    private Long  account;
+    private String account;
     private String password;
     private Long  racefir;
     private Long  racesec;
