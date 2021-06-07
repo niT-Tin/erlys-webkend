@@ -2,7 +2,7 @@ package com.example.erlysflexq.controller;
 
 
 import com.example.erlysflexq.pojo.Administrator;
-import com.example.erlysflexq.pojo.Referee;
+import com.example.erlysflexq.pojo.Userinfo;
 import com.example.erlysflexq.pojo.User;
 import com.example.erlysflexq.pojo.Userinfo;
 import com.example.erlysflexq.service.AdministratorService;
@@ -86,7 +86,7 @@ public class Bosscontroller {
     @GetMapping("/getallReferee")
     @ApiOperation("获取所有信息")
     @CrossOrigin
-    public List<Referee> selectAllReferee(){
+    public List<Userinfo> selectAllReferee(){
         return refereeService.findAll();
     }
 
@@ -94,7 +94,7 @@ public class Bosscontroller {
     @PostMapping("/updateoneReferee")
     @ApiOperation("修改单个信息")
     @CrossOrigin
-    public int updateOneReferee(Referee referee){
+    public int updateOneReferee(Userinfo referee){
         int update = refereeService.update(referee);
         if(update == 1){
             return HttpStatus.SC_OK;
@@ -106,7 +106,7 @@ public class Bosscontroller {
     @GetMapping("/getoneReferee")
     @ApiOperation("获取单个信息")
     @CrossOrigin
-    public Referee findOneReferee(Integer id){
+    public Userinfo findOneReferee(Integer id){
         return refereeService.findOne(id);
     }
 
@@ -126,7 +126,7 @@ public class Bosscontroller {
     @PostMapping("/insertoneReferee")
     @ApiOperation("插入单个信息")
     @CrossOrigin
-    public int insertOneReferee(Referee referee) {
+    public int insertOneReferee(Userinfo referee) {
         int insert = refereeService.insert(referee);
         if (insert == 1) {
             return HttpStatus.SC_OK;
