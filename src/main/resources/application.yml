@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    username:
+    password:
+    url: jdbc:mysql://:3306/flexq?serverTimezone=Asia/Shanghai&characterEncoding=UTF-8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+server:
+  tomcat:
+    uri-encoding: UTF-8
+    threads:
+      max: 200
+      min-spare: 30
+    connection-timeout: 5000ms
+  port: 80
+  servlet:
+    context-path: /flexq
