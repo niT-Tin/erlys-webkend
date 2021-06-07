@@ -9,11 +9,15 @@ import com.example.erlysflexq.pojo.Userinfo;
 import com.example.erlysflexq.service.ArrangementService;
 import com.example.erlysflexq.service.RefereeService;
 import com.example.erlysflexq.service.UserinfoService;
+import com.example.erlysflexq.utils.CompareSameInfo;
 import io.swagger.annotations.ApiOperation;
 import org.apache.http.HttpStatus;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.teasoft.bee.erlys.gets.GetMyWish;
+import org.teasoft.bee.osql.SuidRich;
+import org.teasoft.honey.osql.core.BeeFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,12 +41,26 @@ public class Admin {
     RefereeService refereeService;
 
 
+    @GetMapping("/updateplayerinfo")
+    @ApiOperation("更新运动员信息")
+    @CrossOrigin
+    public int updateUserInfo(Userinfo userinfo){
+
+        SuidRich suidRich = BeeFactory.getHoneyFactory().getSuidRich();
+        try{
+            suidRich.update(CompareSameInfo.cp(userinfo));
+            return HttpStatus.SC_OK;
+        }catch(Exception e){
+            return HttpStatus.SC_BAD_REQUEST;
+        }
+    }
+
+
     @GetMapping("/getallplayerinfo")
     @ApiOperation("获取所有运动员信息")
     @CrossOrigin
     public List<Userinfo> selectAllPlayerInfo(){
         List<Userinfo> all = userinfoService.findAll();
-//        List<Userinfo> list = new ArrayList<>();
         return all.stream()
                 .filter(userinfo -> userinfo.getRoles().equals(role3))
                 .collect(Collectors.toList());
