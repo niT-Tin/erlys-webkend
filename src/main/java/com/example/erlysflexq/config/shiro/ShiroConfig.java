@@ -24,30 +24,30 @@ public class ShiroConfig {
         return securityManager;
     }
 
-//    @Bean("shiroFilter")
-//    public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager, MyFilter filter){
-//        ShiroFilterFactoryBean shiroFilter = new ShiroFilterFactoryBean();
-//        shiroFilter.setSecurityManager(securityManager);
-//
-//        Map<String, Filter> map = new HashMap<>();
-//        map.put("filter", filter);
-//        shiroFilter.setFilters(map);
-//
-//        Map<String, String> filterMap = new LinkedHashMap<>();
-//
-//        filterMap.put("/webjars/**", "anon");
-//        filterMap.put("/login", "anon");
-//        filterMap.put("/druid/**", "anon");
-//        filterMap.put("/error", "anon");
-//        filterMap.put("/sys/login", "anon");
-//        filterMap.put("/swagger/**", "anon");
-//        filterMap.put("/v2/api-docs", "anon");
-//        filterMap.put("/swagger-ui.html", "anon");
-//        filterMap.put("/swagger-resources/**", "anon");
+    @Bean("shiroFilter")
+    public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager, MyFilter filter){
+        ShiroFilterFactoryBean shiroFilter = new ShiroFilterFactoryBean();
+        shiroFilter.setSecurityManager(securityManager);
+
+        Map<String, Filter> map = new HashMap<>();
+        map.put("filter", filter);
+        shiroFilter.setFilters(map);
+
+        Map<String, String> filterMap = new LinkedHashMap<>();
+
+        filterMap.put("/webjars/**", "anon");
+        filterMap.put("/login", "anon");
+        filterMap.put("/druid/**", "anon");
+        filterMap.put("/error", "anon");
+        filterMap.put("/sys/login", "anon");
+        filterMap.put("/swagger/**", "anon");
+        filterMap.put("/v2/api-docs", "anon");
+        filterMap.put("/swagger-ui.html", "anon");
+        filterMap.put("/swagger-resources/**", "anon");
 //        filterMap.put("/**", "oauth2");
-//        shiroFilter.setFilterChainDefinitionMap(filterMap);
-//        return shiroFilter;
-//    }
+        shiroFilter.setFilterChainDefinitionMap(filterMap);
+        return shiroFilter;
+    }
 
     @Bean("lifecycleBeanPostProcessor ")
     public LifecycleBeanPostProcessor lifecycleBeanPostProcessor(){
