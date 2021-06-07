@@ -2,7 +2,7 @@ package com.example.erlysflexq.service;
 
 
 import com.example.erlysflexq.dao.RefereeProperties;
-import com.example.erlysflexq.pojo.Referee;
+import com.example.erlysflexq.pojo.Userinfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,15 +13,15 @@ public class RefereeService {
     @Autowired
     RefereeProperties refereeProperties;
 
-    public List<Referee> findAll(){
+    public List<Userinfo> findAll(){
         return refereeProperties.findAll();
     }
 
-    public int update(Referee referee){
+    public int update(Userinfo referee){
         return refereeProperties.update(referee);
     }
 
-    public Referee findOne(int id){
+    public Userinfo findOne(int id){
         return refereeProperties.findOne(id);
     }
 
@@ -29,7 +29,7 @@ public class RefereeService {
         return refereeProperties.delete(id);
     }
 
-    public int insert(Referee referee){
+    public int insert(Userinfo referee){
         return refereeProperties.insert(referee);
     }
 
