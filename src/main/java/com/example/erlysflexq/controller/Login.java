@@ -6,6 +6,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 public class Login {
 
-    @RequestMapping("/welogin")
+    @PostMapping("/welogin")
     @ApiOperation("手机端登录")
     public int weLogin(String account, String password) {
         Subject subject = SecurityUtils.getSubject();
@@ -27,7 +28,7 @@ public class Login {
         }
     }
 
-    @RequestMapping("/login")
+    @PostMapping("/login")
     @ApiOperation("Web端登录")
     public int webLogin(String account, String password) {
         Subject subject = SecurityUtils.getSubject();
