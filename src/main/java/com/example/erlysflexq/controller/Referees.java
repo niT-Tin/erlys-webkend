@@ -37,7 +37,6 @@ public class Referees {
 //            return HttpStatus.SC_FORBIDDEN;
 //    }
 
-    @RequiresRoles({"admin", "referee"})
     @PostMapping("/insertm")
     @ApiOperation("根据名字插入多人赛信息")
     @CrossOrigin
