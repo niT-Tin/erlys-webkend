@@ -75,7 +75,6 @@ public class Bosscontroller {
 //            return HttpStatus.SC_FORBIDDEN;
 //    }
 //
-    @RequiresRoles({"admin", "referee"})
     @GetMapping("/selectscorelist")
     @ApiOperation("获取成绩列表降序排列")
     @CrossOrigin
