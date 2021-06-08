@@ -22,32 +22,32 @@ import java.util.List;
 @RequestMapping("/api")
 public class Users {
 
-    @Autowired
-    MultiraceService multiraceService;
-    @Autowired
-    ArrangementService arrangementService;
-    @Autowired
-    UserService userService;
-    @CrossOrigin
-    @GetMapping("/getoneMultirace")
-    @ApiOperation("获取单个信息(数据表发生改变)")
-    @RequiresAuthentication
-    public Multirace findOneMultirace(Integer id){
-        return multiraceService.findOne(id);
-    }
-    @CrossOrigin
-    @GetMapping("/getallArrangement")
-    @ApiOperation("获取所有信息")
-    @RequiresAuthentication
-    public List<Arrangement> findAllArrangement(){
-//        SuidRich suidRich = BeeFactory.getHoneyFactory().getSuidRich();
-        return SuidRichData.selectAll(new Arrangement());
-    }
-    @GetMapping("/getoneUser")
-    @ApiOperation("获取单个信息（数据表发生改变）")
-    @CrossOrigin
-    @RequiresAuthentication
-    public User findOneUser(Integer id){
-        return  userService.findOne(id);
-    }
+//    @Autowired
+//    MultiraceService multiraceService;
+//    @Autowired
+//    ArrangementService arrangementService;
+//    @Autowired
+//    UserService userService;
+//    @CrossOrigin
+//    @GetMapping("/getoneMultirace")
+//    @ApiOperation("获取单个信息(数据表发生改变)")
+//    @RequiresAuthentication
+//    public Multirace findOneMultirace(Integer id){
+//        return multiraceService.findOne(id);
+//    }
+//    @CrossOrigin
+//    @GetMapping("/getallArrangement")
+//    @ApiOperation("获取所有信息")
+//    @RequiresAuthentication
+//    public List<Arrangement> findAllArrangement(){
+////        SuidRich suidRich = BeeFactory.getHoneyFactory().getSuidRich();
+//        return SuidRichData.selectAll(new Arrangement());
+//    }
+//    @GetMapping("/getoneUser")
+//    @ApiOperation("获取单个信息（数据表发生改变）")
+//    @CrossOrigin
+//    @RequiresAuthentication
+//    public User findOneUser(Integer id){
+//        return  userService.findOne(id);
+//    }
 }
