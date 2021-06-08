@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/api")
 public class Logout {
 
     @PostMapping("/logout")
     @ApiOperation("退出登录")
+    @CrossOrigin
     public int logout(){
         Subject subject = SecurityUtils.getSubject();
         if(subject != null){

@@ -12,6 +12,7 @@ import com.example.erlysflexq.service.UserinfoService;
 import com.example.erlysflexq.utils.CompareSameInfo;
 import io.swagger.annotations.ApiOperation;
 import org.apache.http.HttpStatus;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -44,6 +45,7 @@ public class Admin {
     @GetMapping("/updateplayerinfo")
     @ApiOperation("更新运动员信息")
     @CrossOrigin
+    @RequiresAuthentication
     public int updateUserInfo(Userinfo userinfo){
 
         SuidRich suidRich = BeeFactory.getHoneyFactory().getSuidRich();
@@ -59,6 +61,7 @@ public class Admin {
     @GetMapping("/getallplayerinfo")
     @ApiOperation("获取所有运动员信息")
     @CrossOrigin
+    @RequiresAuthentication
     public List<Userinfo> selectAllPlayerInfo(){
         List<Userinfo> all = userinfoService.findAll();
         return all.stream()
@@ -69,6 +72,7 @@ public class Admin {
     @GetMapping("/getallrefereeinfo")
     @ApiOperation("获取所有裁判信息")
     @CrossOrigin
+    @RequiresAuthentication
     public List<Userinfo> selectAllRefereeInfo(){
         List<Userinfo> all = refereeService.findAll();
         return all.stream()

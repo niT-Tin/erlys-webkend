@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/api")
 public class Login {
 
     @PostMapping("/welogin")
     @ApiOperation("手机端登录")
+    @CrossOrigin
     public int weLogin(String account, String password) {
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken token = new UsernamePasswordToken(account, password);
@@ -30,6 +30,7 @@ public class Login {
 
     @PostMapping("/login")
     @ApiOperation("Web端登录")
+    @CrossOrigin
     public int webLogin(String account, String password) {
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken token = new UsernamePasswordToken(account, password);

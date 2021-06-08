@@ -6,6 +6,7 @@ import com.example.erlysflexq.service.MultiraceService;
 import com.example.erlysflexq.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import org.apache.http.HttpStatus;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -26,6 +27,7 @@ public class Referees {
     @PostMapping("/updateoneUser")
     @ApiOperation("修改单个信息（数据表发生更改）")
     @CrossOrigin
+    @RequiresAuthentication
     public int updateOneUser(User user){
         int update= userService.update(user);
         if (update == 1) {
@@ -38,6 +40,7 @@ public class Referees {
     @PostMapping("/insertm")
     @ApiOperation("根据名字插入多人赛信息")
     @CrossOrigin
+    @RequiresAuthentication
     public int insertMultiRace(String name,Long fir,
                                Long sec, Long thr, Long fou, Long fif,
                                Long six, int sc){

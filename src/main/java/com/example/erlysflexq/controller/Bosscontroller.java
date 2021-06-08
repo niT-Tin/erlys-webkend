@@ -9,6 +9,7 @@ import com.example.erlysflexq.service.AdministratorService;
 import com.example.erlysflexq.service.RefereeService;
 import io.swagger.annotations.ApiOperation;
 import org.apache.http.HttpStatus;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +29,7 @@ public class Bosscontroller {
     @GetMapping("/getallAdministrator")
     @ApiOperation("获取所有信息")
     @CrossOrigin
+    @RequiresAuthentication
     public List<Administrator> selectAllAdministrator(){
         return administratorService.findAll();
     }
@@ -35,6 +37,7 @@ public class Bosscontroller {
     @PostMapping("/updateoneAdministrator")
     @ApiOperation("修改单个信息")
     @CrossOrigin
+    @RequiresAuthentication
     public int updateOneAdministrator(Administrator administrator){
         int update = administratorService.update(administrator);
         if(update == 1){
@@ -48,6 +51,7 @@ public class Bosscontroller {
     @GetMapping("/getoneAdministrator")
     @ApiOperation("获取单个信息")
     @CrossOrigin
+    @RequiresAuthentication
     public Administrator findOneAdministrator(Integer id){
         return administratorService.findOne(id);
     }
@@ -55,6 +59,7 @@ public class Bosscontroller {
     @PostMapping("/deleteoneAdministrator")
     @ApiOperation("根据ID删除单个信息")
     @CrossOrigin
+    @RequiresAuthentication
     public int deleteByIdAdministrator(Integer id){
         int delete = administratorService.delete(id);
         if(delete == 1){
@@ -67,6 +72,7 @@ public class Bosscontroller {
     @GetMapping("/selectscorelist")
     @ApiOperation("获取成绩列表降序排列")
     @CrossOrigin
+    @RequiresAuthentication
     public List<Userinfo> selectScoreList(){
         return GetMyWish.selectAllAndSortGrade(new Userinfo(), "racescore");
     }
@@ -86,6 +92,7 @@ public class Bosscontroller {
     @GetMapping("/getallReferee")
     @ApiOperation("获取所有信息")
     @CrossOrigin
+    @RequiresAuthentication
     public List<Userinfo> selectAllReferee(){
         return refereeService.findAll();
     }
@@ -94,6 +101,7 @@ public class Bosscontroller {
     @PostMapping("/updateoneReferee")
     @ApiOperation("修改单个信息")
     @CrossOrigin
+    @RequiresAuthentication
     public int updateOneReferee(Userinfo referee){
         int update = refereeService.update(referee);
         if(update == 1){
@@ -114,6 +122,7 @@ public class Bosscontroller {
     @PostMapping("/deleteoneReferee")
     @ApiOperation("根据ID删除单个信息")
     @CrossOrigin
+    @RequiresAuthentication
     public int deleteByIdReferee(Integer id){
         int delete = refereeService.delete(id);
         if(delete == 1){
@@ -126,6 +135,7 @@ public class Bosscontroller {
     @PostMapping("/insertoneReferee")
     @ApiOperation("插入单个信息")
     @CrossOrigin
+    @RequiresAuthentication
     public int insertOneReferee(Userinfo referee) {
         int insert = refereeService.insert(referee);
         if (insert == 1) {
