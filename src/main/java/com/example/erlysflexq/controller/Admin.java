@@ -46,7 +46,6 @@ public class Admin {
     @ApiOperation("更新运动员信息")
     @CrossOrigin
     @RequiresAuthentication
-    @RequiresRoles({"admin","referee"})
     public RqObject updateUserInfo(RqObject rq){
         RqObject r = new RqObject();
         SuidRich suidRich = BeeFactory.getHoneyFactory().getSuidRich();
@@ -65,7 +64,6 @@ public class Admin {
     @ApiOperation("获取所有运动员信息")
     @CrossOrigin
     @RequiresAuthentication
-    @RequiresRoles({"admin","referee"})
     public RqObject selectAllPlayerInfo(){
         List<Userinfo> all = userinfoService.findAll();
         List<Userinfo> collect = all.stream()
