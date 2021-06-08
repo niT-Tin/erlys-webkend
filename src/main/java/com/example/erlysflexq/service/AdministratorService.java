@@ -2,7 +2,7 @@ package com.example.erlysflexq.service;
 
 
 import com.example.erlysflexq.dao.AdministratorProperties;
-import com.example.erlysflexq.pojo.Administrator;
+import com.example.erlysflexq.pojo.Userinfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,15 +12,15 @@ import java.util.List;
 public class AdministratorService {
     @Autowired
     AdministratorProperties administratorProperties;
-    public List<Administrator> findAll(){
+    public List<Userinfo> findAll(){
         return administratorProperties.findAll();
     }
 
-    public int update(Administrator administrator){
+    public int update(Userinfo administrator){
         return administratorProperties.update(administrator);
     }
 
-    public Administrator findOne(int id){
+    public Userinfo findOne(int id){
         return administratorProperties.findOne(id);
     }
 
@@ -28,7 +28,7 @@ public class AdministratorService {
         return administratorProperties.delete(id);
     }
 
-    public int insert(Administrator administrator){
+    public int insert(Userinfo administrator){
         return administratorProperties.insert(administrator);
     }
 
