@@ -4,6 +4,7 @@ package com.example.erlysflexq.controller;
 import cn.hutool.system.UserInfo;
 import com.example.erlysflexq.dao.UserProperties;
 import com.example.erlysflexq.pojo.Arrangement;
+import com.example.erlysflexq.pojo.RqObject;
 import com.example.erlysflexq.pojo.User;
 import com.example.erlysflexq.pojo.Userinfo;
 import com.example.erlysflexq.service.ArrangementService;
@@ -28,7 +29,6 @@ import java.util.stream.Collectors;
 @RequestMapping("/api")
 public class Admin {
 
-    final String role1 = "admin";
     final String role2 = "referee";
     final String role3 = "player";
 
@@ -46,14 +46,17 @@ public class Admin {
     @ApiOperation("更新运动员信息")
     @CrossOrigin
     @RequiresAuthentication
-    public int updateUserInfo(Userinfo userinfo){
-
+    @RequiresRoles({"admin","referee"})
+    public RqObject updateUserInfo(RqObject rq){
+        RqObject r = new RqObject();
         SuidRich suidRich = BeeFactory.getHoneyFactory().getSuidRich();
         try{
-            suidRich.update(CompareSameInfo.cp(userinfo));
-            return HttpStatus.SC_OK;
+            suidRich.update(CompareSameInfo.cp(rq.getUserInfo()));
+            r.setSTATUS(HttpStatus.SC_OK);
+            return r;
         }catch(Exception e){
-            return HttpStatus.SC_BAD_REQUEST;
+            r.setSTATUS(HttpStatus.SC_BAD_REQUEST);
+            return r;
         }
     }
 
@@ -62,134 +65,157 @@ public class Admin {
     @ApiOperation("获取所有运动员信息")
     @CrossOrigin
     @RequiresAuthentication
-    public List<Userinfo> selectAllPlayerInfo(){
+    @RequiresRoles({"admin","referee"})
+    public RqObject selectAllPlayerInfo(){
         List<Userinfo> all = userinfoService.findAll();
-        return all.stream()
+        List<Userinfo> collect = all.stream()
                 .filter(userinfo -> userinfo.getRoles().equals(role3))
                 .collect(Collectors.toList());
+        RqObject r = new RqObject();
+        r.setUserinfoList(collect);
+        return r;
     }
 
     @GetMapping("/getallrefereeinfo")
     @ApiOperation("获取所有裁判信息")
     @CrossOrigin
     @RequiresAuthentication
-    public List<Userinfo> selectAllRefereeInfo(){
-        List<Userinfo> all = refereeService.findAll();
-        return all.stream()
+    @RequiresRoles("admin")
+    public RqObject selectAllRefereeInfo(){
+        List<Userinfo> infos = refereeService.findAll();
+        List<Userinfo> collect = infos.stream()
                 .filter(userinfo -> userinfo.getRoles().equals(role2))
                 .collect(Collectors.toList());
+        RqObject r = new RqObject();
+        r.setUserinfoList(collect);
+        return r;
     }
 
-
-
-    @GetMapping("/getallUser")
-    @ApiOperation("获取所有信息")
-    @CrossOrigin
-    public List<User> selectAllUser(){
-        return userService.findAll();
-    }
+//    @GetMapping("/getallUser")
+//    @ApiOperation("获取所有信息")
+//    @CrossOrigin
+//    public List<User> selectAllUser(){
+//        return userService.findAll();
+//    }
 
     @RequiresRoles("admin")
     @PostMapping("/setarrangement")
     @ApiOperation("设置赛程")
     @CrossOrigin
-    public int setArrangement(List<Arrangement> list){
+    public RqObject setArrangement(RqObject r){
+        List<Arrangement> list = r.getArrangementList();
+        RqObject rq = new RqObject();
 //        arrangementService.insert()
         int count = 0;
         for (Arrangement arrangement : list) {
             arrangementService.insert(arrangement);
             count++;
         }
-        if (count == list.size())
-            return HttpStatus.SC_OK;
-        else
-            return HttpStatus.SC_FORBIDDEN;
+        if (count == list.size()){
+            rq.setSTATUS(HttpStatus.SC_OK);
+        }
+        else{
+            rq.setSTATUS(HttpStatus.SC_FORBIDDEN);
+        }
+        return rq;
+
     }
 
 
-    @PostMapping("/deleteoneUser(数据表发生改变)")
-    @ApiOperation("根据ID删除单个信息")
-    @CrossOrigin
-    public int deleteByIdUser(Integer id){
-        int delete = userService.delete(id);
-        if(delete == 1){
-            return HttpStatus.SC_OK;
-        }else
-            return HttpStatus.SC_FORBIDDEN;
-    }
-    @PostMapping("/insertoneUser(数据表发生改变)")
-    @ApiOperation("插入单个信息")
-    @CrossOrigin
-    public int insertOneUser(User user){
-        int insert = userService.insert(user);
-        if(insert == 1){
-            return HttpStatus.SC_OK;
-        }else
-            return HttpStatus.SC_FORBIDDEN;
-    }
+//    @PostMapping("/deleteoneUser(数据表发生改变)")
+//    @ApiOperation("根据ID删除单个信息")
+//    @CrossOrigin
+//    public int deleteByIdUser(Integer id){
+//        int delete = userService.delete(id);
+//        if(delete == 1){
+//            return HttpStatus.SC_OK;
+//        }else{
+//            return HttpStatus.SC_FORBIDDEN;
+//        }
+//
+//    }
+//    @PostMapping("/insertoneUser(数据表发生改变)")
+//    @ApiOperation("插入单个信息")
+//    @CrossOrigin
+//    public int insertOneUser(User user){
+//        int insert = userService.insert(user);
+//        if(insert == 1){
+//            return HttpStatus.SC_OK;
+//        }else
+//            return HttpStatus.SC_FORBIDDEN;
+//    }
 
     //
-    @RequiresRoles({"admin", "referee"})
-    @GetMapping("/getallUserinfo")
-    @ApiOperation("获取所有信息")
-    @CrossOrigin
-    public List<Userinfo> selectAllUserinfo(){
-        return userinfoService.findAll();
-    }
+//    @RequiresRoles({"admin", "referee"})
+//    @GetMapping("/getallUserinfo")
+//    @ApiOperation("获取所有信息")
+//    @CrossOrigin
+//    public List<Userinfo> selectAllUserinfo(){
+//        return userinfoService.findAll();
+//    }
 
-    @RequiresRoles("admin")
-    @PostMapping("/updateoneUserinfo")
-    @ApiOperation("修改单个信息")
-    @CrossOrigin
-    public int updateOneUserinfo(Userinfo userinfo){
-        int update = userinfoService.update(userinfo);
-        if(update == 1){
-            return HttpStatus.SC_OK;
-        }else
-            return HttpStatus.SC_FORBIDDEN;
-    }
+//    @RequiresRoles("admin")
+//    @PostMapping("/updateoneUserinfo")
+//    @ApiOperation("修改单个信息")
+//    @CrossOrigin
+//    public int updateOneUserinfo(Userinfo userinfo){
+//        int update = userinfoService.update(userinfo);
+//        if(update == 1){
+//            return HttpStatus.SC_OK;
+//        }else
+//            return HttpStatus.SC_FORBIDDEN;
+//    }
 
     @GetMapping("/getoneUserinfo")
     @ApiOperation("获取单个信息")
     @CrossOrigin
-    public Userinfo findOneUserinfo(Integer id){
-        return userinfoService.findOne(id);
+    @RequiresAuthentication
+    public RqObject findOneUserinfo(Integer id){
+        RqObject value = new RqObject();
+        value.setUserInfo(userinfoService.findOne(id));
+        return value;
     }
 
     @RequiresRoles("admin")
     @PostMapping("/deleteoneUserinfo")
     @ApiOperation("根据ID删除单个信息")
     @CrossOrigin
-    public int deleteByIdUserinfo(Integer id){
+    public RqObject deleteByIdUserinfo(Integer id){
         int delete = userinfoService.delete(id);
+        RqObject r = new RqObject();
         if(delete == 1){
-            return HttpStatus.SC_OK;
-        }else
-            return HttpStatus.SC_FORBIDDEN;
+            r.setSTATUS(HttpStatus.SC_OK);
+        }else{
+            r.setSTATUS(HttpStatus.SC_FORBIDDEN);
+        }
+        return r;
     }
 
     @RequiresRoles("admin")
     @PostMapping("/insertoneUserinfo")
     @ApiOperation("插入单个信息")
     @CrossOrigin
-    public int insertOneUserinfo(Userinfo Userinfo){
-        int insert = userinfoService.insert(Userinfo);
+    public RqObject insertOneUserinfo(RqObject r){
+        int insert = userinfoService.insert(r.getUserInfo());
         if(insert == 1){
-            return HttpStatus.SC_OK;
+            r.setSTATUS(HttpStatus.SC_OK);
         }else
-            return HttpStatus.SC_FORBIDDEN;
+            r.setSTATUS(HttpStatus.SC_FORBIDDEN);
+        return r;
     }
     @PostMapping("/insertmany")
     @ApiOperation("插入n项信息(测试接口)")
     @CrossOrigin
-    public int insertMany(List<Arrangement> list){
+    public RqObject insertMany(RqObject rqObject){
 
+        List<Arrangement> list = rqObject.getArrangementList();
         int count = 0;
         for (Arrangement arrangement : list) {
             arrangementService.insert(arrangement);
             count++;
         }
-        return count;
+        rqObject.setSTATUS(count);
+        return rqObject;
     }
 
 }
