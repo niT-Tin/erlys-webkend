@@ -1,5 +1,6 @@
 package com.example.erlysflexq.controller;
 
+import com.example.erlysflexq.pojo.RqObject;
 import io.swagger.annotations.ApiOperation;
 import org.apache.http.HttpStatus;
 import org.apache.shiro.SecurityUtils;
@@ -16,13 +17,15 @@ public class Logout {
     @PostMapping("/logout")
     @ApiOperation("退出登录")
     @CrossOrigin
-    public int logout(){
+    public RqObject logout(){
         Subject subject = SecurityUtils.getSubject();
+        RqObject r = new RqObject();
         if(subject != null){
             subject.logout();
-            return HttpStatus.SC_OK;
+            r.setSTATUS(HttpStatus.SC_OK);
         }else
-            return HttpStatus.SC_BAD_REQUEST;
+            r.setSTATUS(HttpStatus.SC_BAD_REQUEST);
+        return r;
     }
 
 }
