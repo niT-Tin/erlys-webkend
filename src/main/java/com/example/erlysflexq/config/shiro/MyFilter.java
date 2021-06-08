@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -26,12 +27,14 @@ public class MyFilter extends AuthenticatingFilter {
 
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
-       if(isLoginRequest(request, response))
-           return true;
-       else{
-           Subject subject = getSubject(request, response);
-           return subject.getPrincipal() != null;
-       }
+//       if(isLoginRequest(request, response))
+//           return true;
+//       else{
+//           Subject subject = getSubject(request, response);
+//           return subject.getPrincipal() != null;
+//       }
+        HttpServletRequest req = (HttpServletRequest) request;
+        return req.getMethod().equals(RequestMethod.OPTIONS.name());
     }
 
     @Override
