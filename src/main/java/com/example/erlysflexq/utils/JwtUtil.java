@@ -18,13 +18,13 @@ import java.util.Date;
 public class JwtUtil {
 
     //密钥
-    @Value("${emos.jwt.secret}")
+    @Value("${flexq.jwt.secret}")
     private String secret;
     //过期时间
-    @Value("${emos.jwt.expire}")
+    @Value("${flexq.jwt.expire}")
     private Integer expire;
 
-    public String generateToken(Integer userId){
+    public String generateToken(Long userId){
         Date date = DateUtil.offset(new Date(), DateField.DAY_OF_YEAR, expire);
         Algorithm algorithm = Algorithm.HMAC256(secret);
         JWTCreator.Builder builder = JWT.create();
