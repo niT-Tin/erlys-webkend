@@ -15,3 +15,11 @@ server:
   port: 80
   servlet:
     context-path: /flexq
+flexq:
+  jwt:
+    #密钥
+    secret: qxelf
+    #令牌过期时间（天）
+    expire: 5
+    #令牌缓存时间（天数）
+    cache-expire: 10
