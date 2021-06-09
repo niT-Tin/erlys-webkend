@@ -7,8 +7,10 @@ import com.example.erlysflexq.pojo.Userinfo;
 import com.example.erlysflexq.pojo.Userinfo;
 import com.example.erlysflexq.service.AdministratorService;
 import com.example.erlysflexq.service.RefereeService;
+import com.example.erlysflexq.utils.JwtUtil;
 import io.swagger.annotations.ApiOperation;
 import org.apache.http.HttpStatus;
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class Bosscontroller {
+
+    private static final String SUCCESS = "成功";
+
+    private static final String FAILED = "失败";
+    @Autowired
+    private JwtUtil jwtUtil;
 //    @Autowired
 //    RefereeService refereeService;
 //
@@ -78,10 +86,19 @@ public class Bosscontroller {
     @GetMapping("/selectscorelist")
     @ApiOperation("获取成绩列表降序排列")
     @CrossOrigin
-    @RequiresAuthentication
-    public RqObject selectScoreList(){
+//    @RequiresRoles(value = {"admin", "referee"}, logical = Logical.OR)
+    public RqObject selectScoreList(@RequestHeader("token") String token){
         RqObject r = new RqObject();
-        r.setUserinfoList(GetMyWish.selectAllAndSortGrade(new Userinfo(), "racescore"));
+        try{
+            jwtUtil.verifyToken(token);
+            r.setUserinfoList(GetMyWish.selectAllAndSortGrade(new Userinfo(), "racescore"));
+            r.setToken(token);
+            r.setSTATUS(HttpStatus.SC_OK);
+            r.setMessage(SUCCESS);
+        }catch(Exception e){
+            r.setSTATUS(HttpStatus.SC_UNAUTHORIZED);
+            r.setMessage(FAILED);
+        }
         return r;
     }
 //
