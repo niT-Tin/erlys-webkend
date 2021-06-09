@@ -10,13 +10,15 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RqObject {
-    int STATUS;
-    String token;
+    private int STATUS;
+    private String token;
 
-    Userinfo userInfo;
-    List<Userinfo> userinfoList;
+    private String message;
 
-    Arrangement arrangement;
-    List<Arrangement> arrangementList;
+    private Userinfo userInfo;
+    private List<Userinfo> userinfoList;
+
+    private Arrangement arrangement;
+    private List<Arrangement> arrangementList;
 
 }
