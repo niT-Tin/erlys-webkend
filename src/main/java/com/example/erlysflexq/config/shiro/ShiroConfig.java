@@ -1,5 +1,6 @@
 package com.example.erlysflexq.config.shiro;
 
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
@@ -15,6 +16,16 @@ import java.util.Map;
 
 @Configuration
 public class ShiroConfig {
+
+
+    @Bean
+    public HashedCredentialsMatcher hashedCredentialsMatcher(){
+        HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
+//        hashedCredentialsMatcher.set
+        hashedCredentialsMatcher.setHashAlgorithmName("hmac256");
+//        hashedCredentialsMatcher.setHashIterations(2);
+        return hashedCredentialsMatcher;
+    }
 
     @Bean("securityManager")
     public SecurityManager securityManager(MyRealm realm) {
@@ -37,6 +48,7 @@ public class ShiroConfig {
 
         filterMap.put("/webjars/**", "anon");
         filterMap.put("/login", "anon");
+        filterMap.put("/welogin", "anon");
         filterMap.put("/druid/**", "anon");
         filterMap.put("/error", "anon");
         filterMap.put("/sys/login", "anon");
