@@ -21,10 +21,12 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.teasoft.bee.erlys.gets.GetMyWish;
+import org.teasoft.bee.getData.SuidRichData;
 import org.teasoft.bee.osql.SuidRich;
 import org.teasoft.honey.osql.core.BeeFactory;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,6 +49,31 @@ public class Admin {
     RefereeService refereeService;
     @Autowired
     JwtUtil jwtUtil;
+
+    @GetMapping("/updateplayerinfo")
+    @ApiOperation("更新运动员信息")
+    @CrossOrigin
+    public RqObject selectArrangementList(@RequestHeader("token") String token){
+        RqObject r = new RqObject();
+        try{
+            jwtUtil.verifyToken(token);
+            List<Arrangement> arrangements = SuidRichData.selectAll(new Arrangement());
+            if(arrangements != null && !arrangements.isEmpty()){
+                r.setArrangementList(arrangements);
+                r.setSTATUS(HttpStatus.SC_OK);
+                r.setToken(token);
+                r.setMessage(SUCCESS);
+            }else{
+                r.setSTATUS(HttpStatus.SC_UNAUTHORIZED);
+                r.setMessage(FAILED);
+            }
+        }catch(Exception e){
+            r.setSTATUS(HttpStatus.SC_UNAUTHORIZED);
+            r.setMessage(FAILED);
+        }
+        return r;
+    }
+
 
 
     @GetMapping("/updateplayerinfo")
@@ -116,27 +143,22 @@ public class Admin {
         return r;
     }
 
-//    @GetMapping("/getallUser")
-//    @ApiOperation("获取所有信息")
-//    @CrossOrigin
-//    public List<User> selectAllUser(){
-//        return userService.findAll();
-//    }
 
-    @RequiresRoles("admin")
     @PostMapping("/setarrangement")
     @ApiOperation("设置赛程")
     @CrossOrigin
-    public RqObject setArrangement(RqObject r, @RequestHeader("token") String token){
+    public RqObject setArrangement(@RequestBody RqObject r, @RequestHeader("token") String token){
         RqObject rq = new RqObject();
         try{
-            jwtUtil.verifyToken(token);
             List<Arrangement> list = r.getArrangementList();
+            System.out.println(Arrays.toString(list.toArray()));
+            jwtUtil.verifyToken(token);
             int count = 0;
             for (Arrangement arrangement : list) {
                 arrangementService.insert(arrangement);
                 count++;
             }
+
             if (count == list.size()){
                 rq.setSTATUS(HttpStatus.SC_OK);
                 rq.setToken(token);
