@@ -50,8 +50,8 @@ public class Admin {
     @Autowired
     JwtUtil jwtUtil;
 
-    @GetMapping("/updateplayerinfo")
-    @ApiOperation("更新运动员信息")
+    @GetMapping("/getarrangement")
+    @ApiOperation("获取赛程信息")
     @CrossOrigin
     public RqObject selectArrangementList(@RequestHeader("token") String token){
         RqObject r = new RqObject();
