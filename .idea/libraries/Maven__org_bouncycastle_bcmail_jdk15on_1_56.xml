@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.bouncycastle:bcmail-jdk15on:1.56">
+    <CLASSES>
+      <root url="jar://E:/MavenM/apache-maven-3.8.1-bin/apache-maven-3.8.1/maven-repo/org/bouncycastle/bcmail-jdk15on/1.56/bcmail-jdk15on-1.56.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://E:/MavenM/apache-maven-3.8.1-bin/apache-maven-3.8.1/maven-repo/org/bouncycastle/bcmail-jdk15on/1.56/bcmail-jdk15on-1.56-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://E:/MavenM/apache-maven-3.8.1-bin/apache-maven-3.8.1/maven-repo/org/bouncycastle/bcmail-jdk15on/1.56/bcmail-jdk15on-1.56-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
