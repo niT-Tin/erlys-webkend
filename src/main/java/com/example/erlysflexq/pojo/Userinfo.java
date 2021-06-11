@@ -34,6 +34,7 @@ public class Userinfo implements Serializable {
     private Long  racefir;
     private Long  racesec;
     private Long  racethr;
+    private Long  racefou;
     private Long racefif;
     private Long racesix;
     private Long  racescore;
