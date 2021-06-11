@@ -19,6 +19,10 @@ public class RqObject implements Serializable {
     private Userinfo userInfo;
     private List<Userinfo> userinfoList;
 
+    private Long[] scores = new Long[6];
+    private Integer sc;
+    private String name;
+
     private Arrangement arrangement;
     private List<Arrangement> arrangementList;
 
