@@ -77,16 +77,14 @@ public class Referees {
     @PostMapping("/insertm")
     @ApiOperation("根据名字插入多人赛信息")
     @CrossOrigin
-//    @RequiresRoles(value = {"admin", "referee"}, logical = Logical.OR)
-    public RqObject insertMultiRace(String name,Long fir,
-                               Long sec, Long thr, Long fou, Long fif,
-                               Long six, int sc, @RequestHeader("token") String token){
+    public RqObject insertMultiRace(@RequestBody RqObject rq, @RequestHeader("token") String token){
         RqObject r = new RqObject();
         try{
             jwtUtil.verifyToken(token);
-            r.setSTATUS(multiraceService.insertMulti(name, fir, sec, thr, fou, fif, six, sc));
+            r.setSTATUS(multiraceService.insertMulti(rq.getName(), rq.getScores(), rq.getSc()));
             r.setToken(token);
             r.setMessage(SUCCESS);
+            r.setScores(rq.getScores());
         }catch(Exception e){
             r.setSTATUS(HttpStatus.SC_UNAUTHORIZED);
             r.setMessage(FAILED);
