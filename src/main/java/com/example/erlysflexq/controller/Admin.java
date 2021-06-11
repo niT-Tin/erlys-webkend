@@ -76,18 +76,20 @@ public class Admin {
 
 
 
-    @GetMapping("/updateplayerinfo")
+    @PostMapping("/updateplayerinfo")
     @ApiOperation("更新运动员信息")
     @CrossOrigin
-    public RqObject updateUserInfo(RqObject rq,@RequestHeader("token") String token){
+    public RqObject updateUserInfo(@RequestBody RqObject rq,@RequestHeader("token") String token){
         RqObject r = new RqObject();
         SuidRich suidRich = BeeFactory.getHoneyFactory().getSuidRich();
         try{
             jwtUtil.verifyToken(token);
+            System.out.println(rq);
             suidRich.update(CompareSameInfo.cp(rq.getUserInfo()));
             r.setSTATUS(HttpStatus.SC_OK);
             r.setToken(token);
             r.setMessage(SUCCESS);
+            r.setUserInfo(rq.getUserInfo());
             return r;
         }catch(Exception e){
             r.setSTATUS(HttpStatus.SC_BAD_REQUEST);
@@ -220,7 +222,26 @@ public class Admin {
 //            return HttpStatus.SC_FORBIDDEN;
 //    }
 
-    @GetMapping("/getoneUserinfo")
+    @PostMapping("/foneuserinfobyname")
+    @ApiOperation("获取单个信息")
+    @CrossOrigin
+//    @RequiresAuthentication
+    public RqObject findOneUserinfoByName(@RequestBody String name, @RequestHeader("token") String token){
+        RqObject value = new RqObject();
+        try{
+            jwtUtil.verifyToken(token);
+            value.setUserInfo(userinfoService.findByName(name));
+            value.setToken(token);
+            value.setSTATUS(HttpStatus.SC_OK);
+            value.setMessage(SUCCESS);
+        }catch(Exception e){
+            value.setSTATUS(HttpStatus.SC_UNAUTHORIZED);
+            value.setMessage(FAILED);
+        }
+        return value;
+    }
+
+    @PostMapping("/getoneUserinfo")
     @ApiOperation("获取单个信息")
     @CrossOrigin
 //    @RequiresAuthentication
