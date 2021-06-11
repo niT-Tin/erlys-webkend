@@ -25,6 +25,10 @@ public class UserinfoService {
         return userinfoProperties.findOne(id);
     }
 
+    public Userinfo findByName(String name){
+        return userinfoProperties.findByName(name);
+    }
+
     public int delete(int id){
         return userinfoProperties.delete(id);
     }
