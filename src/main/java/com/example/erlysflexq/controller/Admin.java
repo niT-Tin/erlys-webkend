@@ -109,7 +109,7 @@ public class Admin {
             jwtUtil.verifyToken(token);
             List<Userinfo> all = userinfoService.findAll();
             List<Userinfo> collect = all.stream()
-                    .filter(userinfo -> userinfo.getRoles().equals(role3))
+                    .filter(userinfo -> userinfo.getRoles().equals(role3) && userinfo.getIsdeleted())
                     .collect(Collectors.toList());
             r.setToken(token);
             r.setUserinfoList(collect);
@@ -131,7 +131,7 @@ public class Admin {
             jwtUtil.verifyToken(token);
             List<Userinfo> infos = refereeService.findAll();
             List<Userinfo> collect = infos.stream()
-                    .filter(userinfo -> userinfo.getRoles().equals(role2))
+                    .filter(userinfo -> userinfo.getRoles().equals(role2) && userinfo.getIsdeleted())
                     .collect(Collectors.toList());
 
             r.setUserinfoList(collect);
