@@ -270,7 +270,7 @@ public class Admin {
             Userinfo userinfo = GetMyWish.selectByName(new Userinfo(), name);
             if(userinfo != null){
                 SuidRich suidRich = BeeFactory.getHoneyFactory().getSuidRich();
-                userinfo.setIsdeleted(true);
+                userinfo.setIsdeleted(false);
                 suidRich.update(userinfo);
                 r.setUserInfo(userinfo);
                 r.setSTATUS(HttpStatus.SC_OK);
