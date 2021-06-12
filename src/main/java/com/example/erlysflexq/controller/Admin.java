@@ -261,14 +261,18 @@ public class Admin {
     }
 
     @PostMapping("/deleteoneUserinfo")
-    @ApiOperation("根据ID删除单个信息")
+    @ApiOperation("根据姓名删除单个信息")
     @CrossOrigin
-    public RqObject deleteByIdUserinfo(Integer id, @RequestHeader("token") String token){
+    public RqObject deleteByIdUserinfo(@RequestBody String name, @RequestHeader("token") String token){
         RqObject r = new RqObject();
         try{
             jwtUtil.verifyToken(token);
-            int delete = userinfoService.delete(id);
-            if(delete == 1){
+            Userinfo userinfo = GetMyWish.selectByName(new Userinfo(), name);
+            if(userinfo != null){
+                SuidRich suidRich = BeeFactory.getHoneyFactory().getSuidRich();
+                userinfo.setIsdeleted(true);
+                suidRich.update(userinfo);
+                r.setUserInfo(userinfo);
                 r.setSTATUS(HttpStatus.SC_OK);
                 r.setToken(token);
                 r.setMessage(SUCCESS);
@@ -286,7 +290,7 @@ public class Admin {
     @PostMapping("/insertoneUserinfo")
     @ApiOperation("插入单个信息")
     @CrossOrigin
-    public RqObject insertOneUserinfo(RqObject r, @RequestHeader("token") String token){
+    public RqObject insertOneUserinfo(@RequestBody RqObject r, @RequestHeader("token") String token){
         try{
             jwtUtil.verifyToken(token);
             int insert = userinfoService.insert(r.getUserInfo());
