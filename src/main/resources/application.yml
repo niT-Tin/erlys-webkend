@@ -2,7 +2,7 @@ spring:
   datasource:
     username:
     password:
-    url: jdbc:mysql://:3306/flexq?serverTimezone=Asia/Shanghai&characterEncoding=UTF-8
+    url: jdbc:mysql://rm-uf6i3ox1ocm68r52hco.mysql.rds.aliyuncs.com:3306/flexq?serverTimezone=Asia/Shanghai&characterEncoding=UTF-8
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
 server:
