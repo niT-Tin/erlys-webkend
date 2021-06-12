@@ -16,6 +16,8 @@ import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.teasoft.bee.erlys.gets.GetMyWish;
+import org.teasoft.bee.osql.SuidRich;
+import org.teasoft.honey.osql.core.BeeFactory;
 
 import java.util.List;
 
@@ -28,6 +30,8 @@ public class Bosscontroller {
     private static final String FAILED = "失败";
     @Autowired
     private JwtUtil jwtUtil;
+
+    SuidRich suidRich = BeeFactory.getHoneyFactory().getSuidRich();
 //    @Autowired
 //    RefereeService refereeService;
 //
@@ -101,6 +105,25 @@ public class Bosscontroller {
         }
         return r;
     }
+
+    @PostMapping("/insertonePlayer")
+    @ApiOperation("插入单个队员信息")
+    @CrossOrigin
+    public RqObject insertOneReferee(@RequestBody RqObject r, @RequestHeader("token") String token) {
+        RqObject rq = new RqObject();
+        try{
+            System.out.println();
+            jwtUtil.verifyToken(token);
+            suidRich.insert(r.getUserInfo());
+            rq.setUserInfo(r.getUserInfo());
+            rq.setSTATUS(HttpStatus.SC_OK);
+            rq.setMessage(SUCCESS);
+        }catch(Exception e){
+            rq.setSTATUS(HttpStatus.SC_UNAUTHORIZED);
+            rq.setMessage(FAILED);
+        }
+        return rq;
+    }
 //
 //    @PostMapping("/insertoneAdministrator")
 //    @ApiOperation("插入单个信息")
@@ -156,16 +179,5 @@ public class Bosscontroller {
 //            return HttpStatus.SC_FORBIDDEN;
 //    }
 //
-//    @RequiresRoles("admin")
-//    @PostMapping("/insertoneReferee")
-//    @ApiOperation("插入单个信息")
-//    @CrossOrigin
-//    @RequiresAuthentication
-//    public int insertOneReferee(Userinfo referee) {
-//        int insert = refereeService.insert(referee);
-//        if (insert == 1) {
-//            return HttpStatus.SC_OK;
-//        } else
-//            return HttpStatus.SC_FORBIDDEN;
-//    }
+
 }
