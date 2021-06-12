@@ -40,4 +40,5 @@ public class Userinfo implements Serializable {
     private Long  racescore;
     private Long ranks;
     private String roles;
+    private Boolean isdeleted;
 }
