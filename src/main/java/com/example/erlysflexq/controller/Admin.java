@@ -10,6 +10,7 @@ import com.example.erlysflexq.service.ArrangementService;
 import com.example.erlysflexq.service.RefereeService;
 import com.example.erlysflexq.service.UserinfoService;
 import com.example.erlysflexq.utils.CompareSameInfo;
+import com.example.erlysflexq.utils.FileUploadUtil;
 import com.example.erlysflexq.utils.JwtUtil;
 import io.swagger.annotations.ApiOperation;
 import org.apache.http.HttpStatus;
@@ -20,11 +21,14 @@ import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.teasoft.bee.ExcelToDatabase.ExcelToDatabase;
 import org.teasoft.bee.erlys.gets.GetMyWish;
 import org.teasoft.bee.getData.SuidRichData;
 import org.teasoft.bee.osql.SuidRich;
 import org.teasoft.honey.osql.core.BeeFactory;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -49,6 +53,8 @@ public class Admin {
     RefereeService refereeService;
     @Autowired
     JwtUtil jwtUtil;
+    @Autowired
+    FileUploadUtil fileUploadUtil;
 
     @GetMapping("/getarrangement")
     @ApiOperation("获取赛程信息")
@@ -74,6 +80,50 @@ public class Admin {
         return r;
     }
 
+    @GetMapping("/getgradeexcel")
+    @ApiOperation("导出信息表")
+    @CrossOrigin
+    public String getExcel(){
+        return "";
+    }
+
+
+
+    @PostMapping("/signs")
+    @ApiOperation("报名接口")
+    @CrossOrigin
+    public RqObject sign(MultipartFile file){
+        RqObject r = new RqObject();
+        System.out.println(file.getOriginalFilename());
+        String[] f = {"身份证号", "地址", "学校", "教练", "监护人", "与监护人关系",
+                "联系方式", "姓名", "性别"};
+        try {
+            String s = fileUploadUtil.ExportExcel(file, false);
+            System.out.println(s);
+            List<Object> objects = ExcelToDatabase.MyExcelToDatabase(
+                    s,
+                    f,
+                    "idcard,address,school,coach,guardian,rela,con" +
+                            "tact,name,gender",
+                    0,
+                    new Userinfo(),
+                    1,
+                    100000
+            );
+            if(objects != null){
+                r.setMessage(file.getOriginalFilename());
+                r.setSTATUS(HttpStatus.SC_OK);
+            }else{
+                r.setMessage(FAILED);
+                r.setSTATUS(HttpStatus.SC_UNAUTHORIZED);
+            }
+        } catch (FileNotFoundException e) {
+            r.setMessage(FAILED);
+            r.setSTATUS(HttpStatus.SC_UNAUTHORIZED);
+            e.printStackTrace();
+        }
+        return r;
+    }
 
 
     @PostMapping("/updateplayerinfo")
