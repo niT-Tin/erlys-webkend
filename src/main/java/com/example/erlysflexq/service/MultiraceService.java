@@ -18,6 +18,9 @@ public class MultiraceService {
     @Autowired
     InsertMulti insertMulti;
 
+    public static void sort(){
+        InsertMulti.sort();
+    }
 
     public int insertMulti(String name, Long[] scores, int sc){
         return insertMulti(name, scores[0],scores[1],scores[2],scores[3],scores[4],scores[5],sc);
