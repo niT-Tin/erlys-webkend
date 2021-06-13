@@ -23,14 +23,14 @@ public class FileUploadUtil {
         //图片访问URI(即除了协议、地址和端口号的URL)
         String savePath = uploadFolder+fileName;  //图片保存路径
         File saveFile = new File(savePath);
-        System.out.println(savePath);
+//        System.out.println(savePath);
         if (!saveFile.exists()){
             boolean mkdirs = saveFile.mkdirs();
 //            System.out.println(mkdirs);
         }
-        System.out.println(saveFile.getAbsoluteFile());
+//        System.out.println(saveFile.getAbsoluteFile());
         try {
-            file.transferTo(saveFile);  //将临时存储的文件移动到真实存储路径下
+            file.transferTo(saveFile);//将临时存储的文件移动到真实存储路径下
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -40,7 +40,7 @@ public class FileUploadUtil {
         if(isExport){
             return fileUrl+fileName;
         }else{
-            return fileName;
+            return  savePath;
         }
     }
 }
