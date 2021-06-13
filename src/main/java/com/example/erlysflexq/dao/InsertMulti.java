@@ -14,10 +14,19 @@ import java.util.List;
  */
 @Component
 public class InsertMulti {
-
+    static SuidRich suidRich = BeeFactory.getHoneyFactory().getSuidRich();
     public  boolean insertMulti(String name, Long[] scores, int sc){
        return insertMulti(name, scores[0], scores[1], scores[2],
                 scores[3], scores[4], scores[5], sc);
+    }
+
+    public static void sort(){
+        List<Userinfo> racescore = GetMyWish.selectAllAndSortGrade(new Userinfo(), "racescore");
+//        System.out.println(racescore);
+        for (int i = 0; i < racescore.size(); i++) {
+            racescore.get(i).setRanks(Long.parseLong((i+1)+""));
+            suidRich.update(racescore.get(i));
+        }
     }
 
     public  boolean insertMulti(String name,Long fir,
@@ -50,12 +59,12 @@ public class InsertMulti {
                 userinfo.setBests(sum);
                 break;
         }
-        SuidRich suidRich = BeeFactory.getHoneyFactory().getSuidRich();
+
         int update = suidRich.update(userinfo);
 
         List<Userinfo> racescore = GetMyWish.selectAllAndSortGrade(new Userinfo(), "racescore");
-        for (int i = 1; i <= racescore.size(); i++) {
-            racescore.get(i).setRanks(Long.parseLong(i+""));
+        for (int i = 0; i < racescore.size(); i++) {
+            racescore.get(i).setRanks(Long.parseLong((i+1)+""));
             suidRich.update(racescore.get(i));
         }
         return update == 1;
