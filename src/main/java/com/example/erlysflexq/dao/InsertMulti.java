@@ -6,6 +6,8 @@ import org.teasoft.bee.erlys.gets.GetMyWish;
 import org.teasoft.bee.osql.SuidRich;
 import org.teasoft.honey.osql.core.BeeFactory;
 
+import java.util.List;
+
 
 /**
  * 插入对应的比赛分数
@@ -50,6 +52,12 @@ public class InsertMulti {
         }
         SuidRich suidRich = BeeFactory.getHoneyFactory().getSuidRich();
         int update = suidRich.update(userinfo);
+
+        List<Userinfo> racescore = GetMyWish.selectAllAndSortGrade(new Userinfo(), "racescore");
+        for (int i = 1; i <= racescore.size(); i++) {
+            racescore.get(i).setRanks(Long.parseLong(i+""));
+            suidRich.update(racescore.get(i));
+        }
         return update == 1;
     }
 
