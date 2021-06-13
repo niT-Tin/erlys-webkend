@@ -1,11 +1,13 @@
 package com.example.erlysflexq.controller;
 
 
+import com.example.erlysflexq.dao.InsertMulti;
 import com.example.erlysflexq.pojo.Administrator;
 import com.example.erlysflexq.pojo.RqObject;
 import com.example.erlysflexq.pojo.Userinfo;
 import com.example.erlysflexq.pojo.Userinfo;
 import com.example.erlysflexq.service.AdministratorService;
+import com.example.erlysflexq.service.MultiraceService;
 import com.example.erlysflexq.service.RefereeService;
 import com.example.erlysflexq.utils.JwtUtil;
 import io.swagger.annotations.ApiOperation;
@@ -95,6 +97,7 @@ public class Bosscontroller {
         RqObject r = new RqObject();
         try{
             jwtUtil.verifyToken(token);
+            MultiraceService.sort();
             r.setUserinfoList(GetMyWish.selectAllAndSortGrade(new Userinfo(), "racescore"));
             r.setToken(token);
             r.setSTATUS(HttpStatus.SC_OK);
