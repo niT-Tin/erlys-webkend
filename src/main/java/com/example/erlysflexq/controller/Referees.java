@@ -13,6 +13,7 @@ import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.teasoft.bee.erlys.gets.GetMyWish;
 import org.teasoft.bee.osql.SuidRich;
@@ -22,8 +23,13 @@ import org.teasoft.honey.osql.core.BeeFactory;
 
 @RequestMapping("/api")
 public class Referees {
-    private static final String SUCCESS = "成功";
-    private static final String FAILED = "失败";
+
+    @Value("${msg.success}")
+    private String SUCCESS;
+
+    @Value("${msg.failed}")
+    private String FAILED;
+
     SuidRich suidRich = BeeFactory.getHoneyFactory().getSuidRich();
     @Autowired
     UserService userService;

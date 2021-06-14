@@ -10,6 +10,7 @@ import org.apache.http.HttpStatus;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.teasoft.bee.erlys.gets.GetMyWish;
 
@@ -17,8 +18,13 @@ import org.teasoft.bee.erlys.gets.GetMyWish;
 @RequestMapping("/api")
 public class Login {
 
-    private static final String SUCCESS = "成功";
-    private static final String FAILED = "失败";
+
+    @Value("${msg.success}")
+    private String SUCCESS;
+
+    @Value("${msg.failed}")
+    private String FAILED;
+
     @Autowired
     ThreadLocalToken threadLocalToken;
 

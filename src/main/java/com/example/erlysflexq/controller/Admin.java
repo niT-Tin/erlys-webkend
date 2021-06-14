@@ -1,7 +1,6 @@
 package com.example.erlysflexq.controller;
 
 
-import cn.hutool.system.UserInfo;
 import com.example.erlysflexq.dao.UserProperties;
 import com.example.erlysflexq.pojo.Arrangement;
 import com.example.erlysflexq.pojo.RqObject;
@@ -10,16 +9,13 @@ import com.example.erlysflexq.service.ArrangementService;
 import com.example.erlysflexq.service.RefereeService;
 import com.example.erlysflexq.service.UserinfoService;
 import com.example.erlysflexq.utils.CompareSameInfo;
+import com.example.erlysflexq.utils.ExcelUtil;
 import com.example.erlysflexq.utils.FileUploadUtil;
 import com.example.erlysflexq.utils.JwtUtil;
 import io.swagger.annotations.ApiOperation;
 import org.apache.http.HttpStatus;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authz.annotation.Logical;
-import org.apache.shiro.authz.annotation.RequiresAuthentication;
-import org.apache.shiro.authz.annotation.RequiresRoles;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.teasoft.bee.ExcelToDatabase.ExcelToDatabase;
@@ -27,9 +23,7 @@ import org.teasoft.bee.erlys.gets.GetMyWish;
 import org.teasoft.bee.getData.SuidRichData;
 import org.teasoft.bee.osql.SuidRich;
 import org.teasoft.honey.osql.core.BeeFactory;
-
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,10 +32,19 @@ import java.util.stream.Collectors;
 @RequestMapping("/api")
 public class Admin {
 
-    static final String role2 = "referee";
-    static final String role3 = "player";
-    static final String SUCCESS = "成功";
-    static final String FAILED = "失败";
+    @Value("${role.role2}")
+    private String role2;
+    @Value("${role.role3}")
+    private String role3;
+
+    @Value("${msg.success}")
+    private String SUCCESS;
+
+    @Value("${msg.failed}")
+    private String FAILED;
+
+    @Value("${file.fileUrl}")
+    private String fileUrl;
 
     @Autowired
     UserProperties userService;
@@ -55,6 +58,8 @@ public class Admin {
     JwtUtil jwtUtil;
     @Autowired
     FileUploadUtil fileUploadUtil;
+    @Autowired
+    ExcelUtil excelUtil;
 
     @GetMapping("/getarrangement")
     @ApiOperation("获取赛程信息")
@@ -80,13 +85,32 @@ public class Admin {
         return r;
     }
 
-    @GetMapping("/getgradeexcel")
-    @ApiOperation("导出信息表")
-    @CrossOrigin
-    public String getExcel(){
-        return "";
-    }
 
+
+    @PostMapping("/exportg")
+    @ApiOperation("返回导出成绩表链接地址")
+    @CrossOrigin
+    public RqObject exportExcel(@RequestHeader("token") String token){
+        RqObject r = new RqObject();
+
+        try{
+            jwtUtil.verifyToken(token);
+            String fileName = excelUtil.DatabaseToExcel();
+//            fileUploadUtil.ExportExcel()
+            if(fileName != null){
+                r.setSTATUS(HttpStatus.SC_OK);
+                r.setToken(token);
+                r.setMessage(fileUrl + fileName);
+            }else{
+                r.setSTATUS(HttpStatus.SC_UNAUTHORIZED);
+                r.setMessage(FAILED);
+            }
+        }catch(Exception e){
+            r.setSTATUS(HttpStatus.SC_UNAUTHORIZED);
+            r.setMessage(FAILED);
+        }
+        return r;
+    }
 
 
     @PostMapping("/signs")

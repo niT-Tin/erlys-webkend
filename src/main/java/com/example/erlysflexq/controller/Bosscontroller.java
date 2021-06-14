@@ -16,6 +16,7 @@ import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.teasoft.bee.erlys.gets.GetMyWish;
 import org.teasoft.bee.osql.SuidRich;
@@ -27,9 +28,12 @@ import java.util.List;
 @RequestMapping("/api")
 public class Bosscontroller {
 
-    private static final String SUCCESS = "成功";
+    @Value("${msg.success}")
+    private String SUCCESS;
 
-    private static final String FAILED = "失败";
+    @Value("${msg.failed}")
+    private String FAILED;
+
     @Autowired
     private JwtUtil jwtUtil;
 
