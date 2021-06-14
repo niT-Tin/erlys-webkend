@@ -9,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 @Configuration
 //@Component
-public class UploadFilePathConfig implements WebMvcConfigurer {
+public class UploadFilePathConfig implements WebMvcConfigurer{
 
     @Value("${file.staticAccessPath}")
     private String staticAccessPath;
@@ -19,5 +19,6 @@ public class UploadFilePathConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler(staticAccessPath).addResourceLocations("file:///" + uploadFolder);
+//        super.addResourceHandlers(registry);
     }
 }
