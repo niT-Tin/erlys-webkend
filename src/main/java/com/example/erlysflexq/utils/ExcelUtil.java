@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.teasoft.bee.getData.SuidRichData;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class ExcelUtil {
@@ -24,8 +25,11 @@ public class ExcelUtil {
         String fileName = System.currentTimeMillis() + "Grade.xlsx";
         try{
             List<Userinfo> userinfos = SuidRichData.selectAll(new Userinfo());
+            List<Userinfo> collect = userinfos.stream()
+                    .filter(userinfo -> userinfo.getRoles().equals(role3))
+                    .collect(Collectors.toList());
 
-            EasyExcel.write(fileName, Userinfo.class).sheet("Sheet1").doWrite(SuidRichData.selectAll(new Userinfo()));
+            EasyExcel.write(fileName, Userinfo.class).sheet("Sheet1").doWrite(collect);
             String[] cmd = {"mv", fileName, uploadFolder+fileName};
             Process p = Runtime.getRuntime().exec(cmd);
             p.waitFor();
