@@ -5,6 +5,22 @@ spring:
     url: jdbc:mysql://rm-uf6i3ox1ocm68r52hco.mysql.rds.aliyuncs.com:3306/flexq?serverTimezone=Asia/Shanghai&characterEncoding=UTF-8
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
+file:
+  staticAccessPath: /api/file/**  #映射路径
+  #文件上传目录（注意Linux和Windows上的目录结构不同）
+  #file.uploadFolder=/root/uploadFiles/
+  uploadFolder: /root/flexq/uploadFiles/   #本地路径
+  fileUrl: http://hk4top.top:80/flexq/api/file/
+
+role:
+  role1: admin
+  role2: referee
+  role3: player
+
+msg:
+  success: 成功
+  failed: 失败
+
 server:
   tomcat:
     uri-encoding: UTF-8
@@ -12,6 +28,7 @@ server:
       max: 200
       min-spare: 30
     connection-timeout: 5000ms
+#    basedir: /root/flexq/uploadFiles/
   port: 80
   servlet:
     context-path: /flexq
