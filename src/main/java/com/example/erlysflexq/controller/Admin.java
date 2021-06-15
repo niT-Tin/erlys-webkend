@@ -46,6 +46,9 @@ public class Admin {
     @Value("${file.fileUrl}")
     private String fileUrl;
 
+    @Value("${pwd.defaultPassword}")
+    private String defaultPassword;
+
     @Autowired
     UserProperties userService;
     @Autowired
@@ -60,6 +63,8 @@ public class Admin {
     FileUploadUtil fileUploadUtil;
     @Autowired
     ExcelUtil excelUtil;
+
+    SuidRich suidRich = BeeFactory.getHoneyFactory().getSuidRich();
 
     @GetMapping("/getarrangement")
     @ApiOperation("获取赛程信息")
@@ -124,7 +129,7 @@ public class Admin {
         try {
             String s = fileUploadUtil.ExportExcel(file, false);
             System.out.println(s);
-            List<Object> objects = ExcelToDatabase.MyExcelToDatabase(
+            List<Userinfo> userinfos = ExcelToDatabase.MyExcelToDatabase(
                     s,
                     f,
                     "idcard,address,school,coach,guardian,rela,con" +
@@ -134,7 +139,14 @@ public class Admin {
                     1,
                     100000
             );
-            if(objects != null){
+            if(userinfos != null){
+                for (Userinfo userinfo : userinfos) {
+                    userinfo.setAccount(userinfo.getIdcard()+"");
+                    userinfo.setPassword(defaultPassword);
+                    userinfo.setRoles(role3);
+                    userinfo.setIsdeleted(true);
+                    suidRich.update(userinfo);
+                }
                 r.setMessage(file.getOriginalFilename());
                 r.setSTATUS(HttpStatus.SC_OK);
             }else{
