@@ -17,6 +17,9 @@ role:
   role2: referee
   role3: player
 
+pwd:
+  defaultPassword: 123321
+
 msg:
   success: 成功
   failed: 失败
